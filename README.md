@@ -25,21 +25,13 @@
 ### [3.2 基本操作](#3.2)  
 ## [四、分支](#4)
 ### [4.1 基本概念](#4.1)
-<<<<<<< HEAD
-### [4.2 基本操作](#4.2)  
-=======
 ### [4.2 基本操作](#4.2) 
->>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
 ## [五、合并](#5)
 ### [5.1 基本概念](#5.1)
 ### [5.2 基本操作](#5.2) 
 ## [六、远程版本库](#6)
 ### [6.1 基本概念](#6.1)
-<<<<<<< HEAD
-### [6.2 基本操作](#6.2)  
-=======
 ### [6.2 基本操作](#6.2)   
->>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
 ------      
         
         
@@ -847,10 +839,7 @@
                 * + [test/test2^] commit mergeCheckoutFile2.txt
                 *++ [test/test1] mergeCheckoutFile
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
         
 ------      
         
@@ -874,14 +863,9 @@
         
 <h3 id='6.2'>6.2 基本命令</h3>  
         
-<<<<<<< HEAD
-#### 1) 创建SS和密钥 
-> - git clone URL
-=======
 #### 1) 创建SSH密钥 
 > - ssh-keygen -t rsa -C "hblvsjtu@163.com" 创建SSH密钥
 > - cat /home/lvhongbin/.ssh/id_rsa.pub 查看秘钥
->>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
 
         
                 [lvhongbin@localhost Git_Study]$ ssh-keygen -t rsa -C "hblvsjtu@163.com"
@@ -921,12 +905,9 @@
                 [root@localhost Git_Study]# git config --global user.email "hblvsjtu@163.com"
                 [root@localhost Git_Study]# git config --global user.name "LvHongbin"
 
-<<<<<<< HEAD
-#### 1) 远程克隆 
-=======
 #### 2) 远程克隆 
->>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
-> - git clone URL
+> - git clone URL 
+> - 克隆文件夹后最好先同步一下文件 git commit -a
         
                 [lvhongbin@localhost git]$ git clone https://github.com/hblvsjtu/Git_Study.git
                 Cloning into 'Git_Study'...
@@ -946,10 +927,12 @@
                 drwxrwxr-x. 2 lvhongbin lvhongbin    80 May 31 18:22 picture
                 -rw-rw-r--. 1 lvhongbin lvhongbin 31474 May 31 18:22 README.html
                 -rw-rw-r--. 1 lvhongbin lvhongbin 40549 May 31 18:22 README.md
-<<<<<<< HEAD
-=======
+
+                LvHongbins-Mac:Git_Study lvhongbin$ git commit -a -m "更新了第6章远程版本库" --author="LvHongbin <hblvsjtu@163.com\>"
+                [master 00d7b4c] 更新了第6章远程版本库
+                 1 file changed, 121 insertions(+), 1 deletion(-)
+
 #### 3) 远程提交 
->>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
 > - git push
                 
                 [lvhongbin@localhost Git_Study]$ git push
@@ -969,13 +952,104 @@
 
                 Username for 'https://github.com': hblvsjtu
                 Password for 'https://hblvsjtu@github.com': 
-<<<<<<< HEAD
-                Everything up-to-date
-=======
                 Everything up-to-date
 #### 4) 远程pull 
 > - git pull
 #### 5) 远程获取元数据 
 > - git fetch
+#### 6) 本地版本库与远程版本库之间建立联系
+> - git remote add origin https://github.com/hblvsjtu/Git_Study.git 添加远程版本库的地址
+> - git remote update 更新元数据
+> - git branch -a 查看所有分支
+                
+                [lvhongbin@localhost Git_Study]$ git remote add origin https://github.com/hblvsjtu/Git_Study.git
+                fatal: remote origin already exists.
+                [lvhongbin@localhost Git_Study]$ git remote update
+                Fetching origin
+                remote: Counting objects: 6, done.
+                remote: Compressing objects: 100% (2/2), done.
+                remote: Total 6 (delta 3), reused 6 (delta 3), pack-reused 0
+                Unpacking objects: 100% (6/6), done.
+                From https://github.com/hblvsjtu/Git_Study
+                   9013bbf..00d7b4c  master     -> origin/master
+                [lvhongbin@localhost Git_Study]$ git branch
+                * master
+                [lvhongbin@localhost Git_Study]$ git branch -a
+                * master
+                  remotes/origin/HEAD -> origin/master
+                  remotes/origin/master
+> - 创建新的分支后push新的分支 git push --set-upstream origin 本地分支
+                
+                LvHongbins-Mac:Git_Study lvhongbin$ git branch test/test1
+                LvHongbins-Mac:Git_Study lvhongbin$ touch testNewBranch.txt
+                LvHongbins-Mac:Git_Study lvhongbin$ vim testNewBranch.txt
+                LvHongbins-Mac:Git_Study lvhongbin$ cat testNewBranch.txt
 
->>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
+                testNewBranch.txt
+                LvHongbins-Mac:Git_Study lvhongbin$ 
+                LvHongbins-Mac:Git_Study lvhongbin$ git show-branch
+                * [master] 更新了第6章远程版本库
+                 ! [test/test1] 更新了第6章远程版本库
+                --
+                *+ [master] 更新了第6章远程版本库
+                LvHongbins-Mac:Git_Study lvhongbin$ git checkout test/test1
+                Switched to branch 'test/test1'
+                LvHongbins-Mac:Git_Study lvhongbin$ git add testNewBranch.txt
+                LvHongbins-Mac:Git_Study lvhongbin$ git commit -m "add testNewBranch.txt for testing creating a new branch" testNewBranch.txt
+                [test/test1 0f7f536] add testNewBranch.txt for testing creating a new branch
+                 1 file changed, 1 insertion(+)
+                 create mode 100644 testNewBranch.txt
+                LvHongbins-Mac:Git_Study lvhongbin$ git show-branch
+                ! [master] 更新了第6章远程版本库
+                 * [test/test1] add testNewBranch.txt for testing creating a new branch
+                --
+                 * [test/test1] add testNewBranch.txt for testing creating a new branch
+                +* [master] 更新了第6章远程版本库
+
+                LvHongbins-Mac:Git_Study lvhongbin$ git push --set-upstream origin test/test1
+                Counting objects: 3, done.
+                Delta compression using up to 4 threads.
+                Compressing objects: 100% (2/2), done.
+                Writing objects: 100% (3/3), 327 bytes | 327.00 KiB/s, done.
+                Total 3 (delta 1), reused 0 (delta 0)
+                remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+                To https://github.com/hblvsjtu/Git_Study.git
+                 * [new branch]      test/test1 -> test/test1
+                Branch 'test/test1' set up to track remote branch 'test/test1' from 'origin'.
+> - 创建新的分支后push到另外的远程分支上，本地分支与远程分支中间有一个冒号 git push --set-upstream origin 本地分支:远程分支
+        
+                LvHongbins-Mac:Git_Study lvhongbin$ touch newBranchfile.txt
+                LvHongbins-Mac:Git_Study lvhongbin$ vim newBranchfile.txt
+                LvHongbins-Mac:Git_Study lvhongbin$ cat newBranchfile.txt
+                newBranchfile.txt for MacOS!
+
+                LvHongbins-Mac:Git_Study lvhongbin$ git add newBranchfile.txt
+                LvHongbins-Mac:Git_Study lvhongbin$ git commit -m "add newBranchfile.txt in the newBranch" --author="LvHongbin <hblvsjtu@163.com>"  newBranchfile.txt
+                [newBranch 0c70c53] add newBranchfile.txt in the newBranch
+                 1 file changed, 1 insertion(+)
+                 create mode 100644 newBranchfile.txt
+
+                LvHongbins-Mac:Git_Study lvhongbin$ git push --set-upstream origin newBranch:newBranchRemote
+                Counting objects: 3, done.
+                Delta compression using up to 4 threads.
+                Compressing objects: 100% (2/2), done.
+                Writing objects: 100% (3/3), 325 bytes | 325.00 KiB/s, done.
+                Total 3 (delta 1), reused 0 (delta 0)
+                remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+                To https://github.com/hblvsjtu/Git_Study.git
+                   0f7f536..0c70c53  newBranch -> newBranchRemote
+                Branch 'newBranch' set up to track remote branch 'newBranchRemote' from 'origin'.
+> - 删除远程分支 git push --set-upstream origin :远程分支
+        
+                LvHongbins-Mac:Git_Study lvhongbin$ git branch addBranch
+                LvHongbins-Mac:Git_Study lvhongbin$ git push origin addBranch
+                Total 0 (delta 0), reused 0 (delta 0)
+                To https://github.com/hblvsjtu/Git_Study.git
+                 * [new branch]      addBranch -> addBranch
+                LvHongbins-Mac:Git_Study lvhongbin$ git push origin :addBranch
+                To https://github.com/hblvsjtu/Git_Study.git
+                 - [deleted]         addBranch
+> - 
+
+
+
