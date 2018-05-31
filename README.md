@@ -25,7 +25,13 @@
 ### [3.2 基本操作](#3.2)  
 ## [四、分支](#4)
 ### [4.1 基本概念](#4.1)
-### [4.2 基本操作](#4.2)   
+### [4.2 基本操作](#4.2) 
+## [五、合并](#5)
+### [5.1 基本概念](#5.1)
+### [5.2 基本操作](#5.2) 
+## [六、远程版本库](#6)
+### [6.1 基本概念](#6.1)
+### [6.2 基本操作](#6.2)   
 ------      
         
         
@@ -832,3 +838,117 @@
                   + [test/test2] git commit --all
                 * + [test/test2^] commit mergeCheckoutFile2.txt
                 *++ [test/test1] mergeCheckoutFile
+
+
+        
+------      
+        
+        
+<h2 id='5'>五、合并</h2>
+<h3 id='5.1'>5.1 基本概念</h3>  
+        
+#### 1) 创建分支 
+> - 
+        
+------      
+        
+        
+<h2 id='6'>六、远程版本库 </h2>
+<h3 id='6.1'>6.1 基本概念</h3>  
+        
+#### 1) 裸版本库和开发版本库 
+> - 开发版本库用于常规的日常开发，他保持当前分支的概念，并在工作目录中提供检出当前分支的副本 git clone URL
+> - 裸版本库没有工作目录，不适合用于正常的开发，也没有检出分支的概念 git clone --bare URL 
+> - 发布的版本库应该是裸版本库
+        
+<h3 id='6.2'>6.2 基本命令</h3>  
+        
+#### 1) 创建SSH密钥 
+> - ssh-keygen -t rsa -C "hblvsjtu@163.com" 创建SSH密钥
+> - cat /home/lvhongbin/.ssh/id_rsa.pub 查看秘钥
+
+        
+                [lvhongbin@localhost Git_Study]$ ssh-keygen -t rsa -C "hblvsjtu@163.com"
+                Generating public/private rsa key pair.
+                Enter file in which to save the key (/home/lvhongbin/.ssh/id_rsa): 
+                Created directory '/home/lvhongbin/.ssh'.
+                Enter passphrase (empty for no passphrase): 
+                Enter same passphrase again: 
+                Your identification has been saved in /home/lvhongbin/.ssh/id_rsa.
+                Your public key has been saved in /home/lvhongbin/.ssh/id_rsa.pub.
+                The key fingerprint is:
+                SHA256:EUwriLzl+Ynh5hF94WEjnhM7AtWcemRvEvgoZsls1uI hblvsjtu@163.com
+                The key's randomart image is:
+                +---[RSA 2048]----+
+                |    .+ +o        |
+                | . o..B .o       |
+                | o+oo*+oB        |
+                |  @=+++Oo=       |
+                | *.o*.BoS        |
+                |  E. * =         |
+                |    = o          |
+                |   o .           |
+                |    .            |
+                +----[SHA256]-----+
+
+                [root@localhost Git_Study]# cat /home/lvhongbin/.ssh/id_rsa.pub
+                ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDIzFf+s+YxALfaXtW7nw2Uxr1h7FzqEgTOEx2k/fGGcMGrCmvbWUX7Cmb3s00sZ4nu6l9etytCRU7xu93m21d/tjnZ0iyCP1rv09+2pS9Rb6ysIOD7Y6Fnoc+Torf3n1rZp4tEufyOO+nMxRmX6rrcizebp9OcLl1ffNRvrD8VCPB1LWcYUPtFphjKDsISRCkXJkJ1HHeIh3SMQfRRKOJa/Wxwvy6TqTe+p4F39AIf0UCEAHqFeUWOMPb6RZ8N5E3xJzEphzQAIyzGSibxxoOq3SbJx5J3f4jM61yfvP/seZHShDwxcu/9m89szMXybor5Swc7RzRAzFClBUhS1DXB hblvsjtu@163.com
+
+                [root@localhost Git_Study]# ssh -T git@github.com
+                The authenticity of host 'github.com (13.229.188.59)' can't be established.
+                RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+                RSA key fingerprint is MD5:16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
+                Are you sure you want to continue connecting (yes/no)? yes
+                Warning: Permanently added 'github.com,13.229.188.59' (RSA) to the list of known hosts.
+                Hi hblvsjtu! You've successfully authenticated, but GitHub does not provide shell access.
+
+                [root@localhost Git_Study]# git config --global user.email "hblvsjtu@163.com"
+                [root@localhost Git_Study]# git config --global user.name "LvHongbin"
+
+#### 2) 远程克隆 
+> - git clone URL
+        
+                [lvhongbin@localhost git]$ git clone https://github.com/hblvsjtu/Git_Study.git
+                Cloning into 'Git_Study'...
+                remote: Counting objects: 22, done.
+                remote: Compressing objects: 100% (19/19), done.
+                remote: Total 22 (delta 6), reused 15 (delta 2), pack-reused 0
+                Unpacking objects: 100% (22/22), done.
+                [lvhongbin@localhost git]$ ls
+                Git_Study  website  website_clone 
+                [lvhongbin@localhost git]$ cd Git_Study
+                [lvhongbin@localhost Git_Study]$ ll -a
+                total 88
+                drwxrwxr-x. 4 lvhongbin lvhongbin    87 May 31 18:22 .
+                drwxrwxr-x. 5 lvhongbin lvhongbin    59 May 31 18:22 ..
+                drwxrwxr-x. 8 lvhongbin lvhongbin   163 May 31 18:22 .git
+                -rw-rw-r--. 1 lvhongbin lvhongbin 14774 May 31 18:22 git.tar.gz
+                drwxrwxr-x. 2 lvhongbin lvhongbin    80 May 31 18:22 picture
+                -rw-rw-r--. 1 lvhongbin lvhongbin 31474 May 31 18:22 README.html
+                -rw-rw-r--. 1 lvhongbin lvhongbin 40549 May 31 18:22 README.md
+#### 3) 远程提交 
+> - git push
+                
+                [lvhongbin@localhost Git_Study]$ git push
+                warning: push.default is unset; its implicit value is changing in
+                Git 2.0 from 'matching' to 'simple'. To squelch this message
+                and maintain the current behavior after the default changes, use:
+
+                  git config --global push.default matching
+
+                To squelch this message and adopt the new behavior now, use:
+
+                  git config --global push.default simple
+
+                See 'git help config' and search for 'push.default' for further information.
+                (the 'simple' mode was introduced in Git 1.7.11. Use the similar mode
+                'current' instead of 'simple' if you sometimes use older versions of Git)
+
+                Username for 'https://github.com': hblvsjtu
+                Password for 'https://hblvsjtu@github.com': 
+                Everything up-to-date
+#### 4) 远程pull 
+> - git pull
+#### 5) 远程获取元数据 
+> - git fetch
+
