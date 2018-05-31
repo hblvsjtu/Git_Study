@@ -832,6 +832,3 @@
                   + [test/test2] git commit --all
                 * + [test/test2^] commit mergeCheckoutFile2.txt
                 *++ [test/test1] mergeCheckoutFile
-
-
-> - 
