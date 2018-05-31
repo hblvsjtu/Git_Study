@@ -1,7 +1,3 @@
-
-    
-
-
 # Git_Study
 
         
@@ -24,6 +20,12 @@
 ### [2.1 Git命令行](#2.1)
 ### [2.2 Git使用快速入门](#2.2)   
 ### [2.3 配置文件](#2.3)  
+## [三、基本的git概念和操作](#3)
+### [3.1 基本概念](#3.1)
+### [3.2 基本操作](#3.2)  
+## [四、分支](#4)
+### [4.1 基本概念](#4.1)
+### [4.2 基本操作](#4.2)   
 ------      
         
         
@@ -35,6 +37,9 @@
 > - Git是由Linux之父Linus Torvalds发明，起初是为了方便管理Linux内核的开发工作
 > - 在Git之前用得最多的是Bitkeeper，然而在2005年春天Bitkeeper对免费版功能做出了限制，是大家觉得使用Bitkeeper并不是长久之计
         
+------      
+        
+               
 <h2 id='2'> 二、起步</h2>
 <h3 id='2.1'>2.1 Git命令行</h3>  
         
@@ -200,6 +205,7 @@
                 1 file changed, 9 insertions(+), 1 deletion(-)
 #### 5) 查看提交历史和比较提交内容
 > - 
+                
                 # 查看单独提交的历史
                 [lvhongbin@localhost website]$ git log
                 commit 79cede26fa341dd55432da1d1e2ae7966eb11767
@@ -361,3 +367,257 @@
 > - alias 如：
              
                 git config --global alias.rmovefile "git rm '文件名'"
+
+        
+------      
+        
+        
+<h2 id='3'>三、基本的git概念</h2>
+<h3 id='3.1'>3.1 基本概念</h3>  
+        
+#### 1) 版本库
+> - repository
+> - 两个数据结构：对象库object store和索引index
+> - 对象库包含原始数据和所有日志消息，作者信息，日期以及其他用来重建项目任意版本或者分支的信息，包括四种原子对象：
+>> - 块对象blob 二进制大对象binary large object，保存一个文件的数据，但是并不包含任何关于该文件的元数据
+>> - 目录树对象tree 包含所有文件的元数据 
+>> - 提交对象commit 保存版本库中每一次变化的元数据，包括作者，提交者，提交日期和日志消息。每一个提交对象都指向一个目录树对象
+>> - 标签对象tag 是一个可以任意被指定的且人类可读的名字，比如虽然79cede26fa341dd55432da1d1e2ae7966eb11767是一个确切的且定义好的提交，但是可以给他指定另外一个标签，如：Version-1.0
+                git tag -m "Tag version 1.0" V1.0 提交码前面7位
+                
+                # 根据提交吗的前7位创建标签对象
+                [lvhongbin@localhost website]$ git tag -m "The first tag" V1.0 2d6c3be
+
+                # 根据标签对象的SHA1值查看提交信息
+                [lvhongbin@localhost website]$ git rev-parse V1.0
+                8b636d23d24b2306e56747dd2dff459ebbb296e9
+                [lvhongbin@localhost website]$ git cat-file -p 8b636d2
+                object 2d6c3bee2137fabb3d7cde090ddc7a38e33a79c1
+                type commit
+                tag V1.0
+                tagger LvHongbin <hblvsjtu@163.com> 1527734156 +0800
+
+                The first tag
+
+                # 运用标签对象查看提交信息
+                [lvhongbin@localhost website]$ git show V1.0
+                tag V1.0
+                Tagger: LvHongbin <hblvsjtu@163.com>
+                Date:   Thu May 31 10:35:56 2018 +0800
+
+                The first tag
+
+                commit 2d6c3bee2137fabb3d7cde090ddc7a38e33a79c1
+                Author: LvHongbin <hblvsjtu@163.com>
+                Date:   Wed May 30 21:36:25 2018 +0800
+
+                    Initial contents of public_html
+
+                diff --git a/index.html b/index.html
+                new file mode 100644
+                index 0000000..34217e9
+                --- /dev/null
+                +++ b/index.html
+                @@ -0,0 +1 @@
+                +My website is alive!
+
+                # 运用标签对象查看提交信息
+                [lvhongbin@localhost website]$ git log V1.0
+                commit 2d6c3bee2137fabb3d7cde090ddc7a38e33a79c1
+                Author: LvHongbin <hblvsjtu@163.com>
+                Date:   Wed May 30 21:36:25 2018 +0800
+
+                    Initial contents of public_html
+
+                # 运用标SHA1值查看提交信息
+                [lvhongbin@localhost website]$ git show 2d6c3bee2137fabb3d7cde090ddc7a38e33a79c1
+                commit 2d6c3bee2137fabb3d7cde090ddc7a38e33a79c1
+                Author: LvHongbin <hblvsjtu@163.com>
+                Date:   Wed May 30 21:36:25 2018 +0800
+
+                    Initial contents of public_html
+
+                diff --git a/index.html b/index.html
+                new file mode 100644
+                index 0000000..34217e9
+                --- /dev/null
+                +++ b/index.html
+                @@ -0,0 +1 @@
+                +My website is alive!
+
+> - 索引index在合并merge，允许管理，检查和同时操作同一个文件的多个版本祈祷非常重要的作用 
+> - 对象库中的每一个对象都有一个唯一的名号曾，这个名称事项对象的内容应用SHA1得到的[SHA1散列值](https://baike.baidu.com/item/SHA1/8812671?fr=aladdin)
+> - 其实git commit 包含着两个步骤: 
+        
+                echo -n "commit a file that says hello\n" | git commit-tree $(git write-tree)
+> - 查看提交信息
+        
+                git cat-file -p 提交码前面7位
+>>>>>> ![图3-1 二次提交的Git对象.jpg]()
+        
+<h3 id='3.2'>3.2 基本操作</h3>  
+        
+#### 1) 添加文件
+> - git add 文件或者目录
+> - 每个添加的文件的全部内容都将被复制到对象库中，并按文件的SHA1名来索引。暂存一个文件也称为缓存caching一个文件，或者叫“把文件放进索引”
+#### 2) 简单查看文件列表和SHA1值
+> - git ls-files --stage
+        
+                [lvhongbin@localhost website]$ git ls-files --stage
+                100644 daf1ba4fdc1246ef1624f8a3f46d9e08f319b920 0   index.html
+#### 3) 提交
+> - 三种状态：文件未添加，文件未提交，文件未更新 
+                
+                # 三种状态：文件未添加（或者说是未追踪），文件未提交，文件未更新
+                [lvhongbin@localhost website]$ vim index.html
+                [lvhongbin@localhost website]$ touch newfilenotsummit.txt
+                [lvhongbin@localhost website]$ touch newfilenotadd.txt
+                [lvhongbin@localhost website]$ git add newfilenotsummit.txt
+                
+                [lvhongbin@localhost website]$ git status
+                # On branch master
+                # Changes to be committed:
+                #   (use "git reset HEAD <file>..." to unstage)
+                #
+                #   new file:   newfilenotsummit.txt
+                #
+                # Changes not staged for commit:
+                #   (use "git add <file>..." to update what will be committed)
+                #   (use "git checkout -- <file>..." to discard changes in working directory)
+                #
+                #   modified:   index.html
+                #
+                # Untracked files:
+                #   (use "git add <file>..." to include in what will be committed)
+                #
+                #   newfilenotadd.txt
+                [lvhongbin@localhost website]$
+> - git commit --all 提交 文件未提交，文件未更新这两种状态下的所有文件，但不包括文件未添加（或者说是未追踪）
+                
+                # 提交 文件未提交，文件未更新这两种状态下的所有文件
+                [lvhongbin@localhost website]$ git commit --all
+                [master 0a4d3f1] execute commit --all command
+                 2 files changed, 1 insertion(+)
+                 create mode 100644 newfilenotsummit.txt
+                [lvhongbin@localhost website]$ git status
+                # On branch master
+                # Untracked files:
+                #   (use "git add <file>..." to include in what will be committed)
+                #
+                #   newfilenotadd.txt
+                nothing added to commit but untracked files present (use "git add" to track)
+#### 4) 删除
+> - git rm 
+> - 从索引和工作目录中删除一个文件，与普通的rm不同，普通的rm只会直接从目录中删除文件，但是不会删除该文件的索引 
+> - git rm --cached 文件名 删除索引中的文件并把它保留在工作目录中 并把文件标记为为追踪，即未添加的状态
+#### 5) 重命名
+> - git mv 更改索引，并显示改名字的记录
+> - 其实以下两个步骤是等价的
+        
+                mv stuff newstuff
+                git rm stuff
+                git add newstuff
+
+                # 等价于
+                git mv stuff newstuff
+
+                [lvhongbin@localhost website]$ touch stuff.txt 
+
+                # 使用第一种的方法
+                [lvhongbin@localhost website]$ git add stuff.txt && git commit -m "before change name" stuff.txt
+                [master 469e38a] before change name
+                 1 file changed, 0 insertions(+), 0 deletions(-)
+                 create mode 100644 stuff.txt
+
+                [lvhongbin@localhost website]$ mv stuff.txt newstuff.txt
+                [lvhongbin@localhost website]$ git rm stuff.txt
+                rm 'stuff.txt'
+                [lvhongbin@localhost website]$ git add newstuff.txt
+                [lvhongbin@localhost website]$ git status
+                # On branch master
+                # Changes to be committed:
+                #   (use "git reset HEAD <file>..." to unstage)
+                #
+                #   renamed:    stuff.txt -> newstuff.txt
+                #
+                # Untracked files:
+                #   (use "git add <file>..." to include in what will be committed)
+                #
+                #   newfilenotadd.txt
+
+                # 使用第二种的方法
+                [lvhongbin@localhost website]$ git mv newstuff.txt newnewstuff.txt
+                [lvhongbin@localhost website]$ git status
+                # On branch master
+                # Changes to be committed:
+                #   (use "git reset HEAD <file>..." to unstage)
+                #
+                #   renamed:    stuff.txt -> newnewstuff.txt
+                #
+                # Untracked files:
+                #   (use "git add <file>..." to include in what will be committed)
+                #
+                #   newfilenotadd.txt
+> - 查看回溯历史 
+>> - git log --follow 文件名
+>> - git cat-file方式
+>> - git show方式
+        
+                [lvhongbin@localhost website]$ git log newnewstuff.txt
+                commit e0766fc70fdc25c7b74322b872b3d1ed32bca7d9
+                Author: LvHongbin <hblvsjtu@163.com>
+                Date:   Thu May 31 11:41:45 2018 +0800
+
+                    has changed filename
+
+                # 查看回溯历史   
+                [lvhongbin@localhost website]$ git log --follow newnewstuff.txt
+                commit e0766fc70fdc25c7b74322b872b3d1ed32bca7d9
+                Author: LvHongbin <hblvsjtu@163.com>
+                Date:   Thu May 31 11:41:45 2018 +0800
+
+                    has changed filename
+
+                commit 469e38ae5cba93289a35d174e601416be7fa185d
+                Author: LvHongbin <hblvsjtu@163.com>
+                Date:   Thu May 31 11:36:39 2018 +0800
+
+                    before change name
+
+                commit 0a4d3f1a2f913e725ed8c4e2bf9afa1cb849fc26
+                Author: LvHongbin <hblvsjtu@163.com>
+                Date:   Thu May 31 11:14:06 2018 +0800
+
+                    execute commit --all command
+
+                # git cat-file方式
+                [lvhongbin@localhost website]$ git cat-file -p  469e38a
+                tree a5801629c277304ef202fd904337b4f3a11d1102
+                parent 0a4d3f1a2f913e725ed8c4e2bf9afa1cb849fc26
+                author LvHongbin <hblvsjtu@163.com> 1527737799 +0800
+                committer LvHongbin <hblvsjtu@163.com> 1527737799 +0800
+
+                before change name
+
+                # git show方式
+                [lvhongbin@localhost website]$ git show 469e38a
+                commit 469e38ae5cba93289a35d174e601416be7fa185d
+                Author: LvHongbin <hblvsjtu@163.com>
+                Date:   Thu May 31 11:36:39 2018 +0800
+
+                    before change name
+
+                diff --git a/stuff.txt b/stuff.txt
+                new file mode 100644
+                index 0000000..e69de29
+
+        
+------      
+        
+        
+<h2 id='4'>四、分支</h2>
+<h3 id='4.1'>1.1 背景</h3>  
+        
+#### 1) VCS
+> -   
+> -       
