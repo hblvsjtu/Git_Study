@@ -1,2 +1,6 @@
 test!
+<<<<<<< HEAD
 test for Linux!
+=======
+test on the MacOS!
+>>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124

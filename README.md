@@ -25,13 +25,21 @@
 ### [3.2 基本操作](#3.2)  
 ## [四、分支](#4)
 ### [4.1 基本概念](#4.1)
+<<<<<<< HEAD
 ### [4.2 基本操作](#4.2)  
+=======
+### [4.2 基本操作](#4.2) 
+>>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
 ## [五、合并](#5)
 ### [5.1 基本概念](#5.1)
 ### [5.2 基本操作](#5.2) 
 ## [六、远程版本库](#6)
 ### [6.1 基本概念](#6.1)
+<<<<<<< HEAD
 ### [6.2 基本操作](#6.2)  
+=======
+### [6.2 基本操作](#6.2)   
+>>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
 ------      
         
         
@@ -839,6 +847,10 @@
                 * + [test/test2^] commit mergeCheckoutFile2.txt
                 *++ [test/test1] mergeCheckoutFile
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
         
 ------      
         
@@ -862,8 +874,14 @@
         
 <h3 id='6.2'>6.2 基本命令</h3>  
         
+<<<<<<< HEAD
 #### 1) 创建SS和密钥 
 > - git clone URL
+=======
+#### 1) 创建SSH密钥 
+> - ssh-keygen -t rsa -C "hblvsjtu@163.com" 创建SSH密钥
+> - cat /home/lvhongbin/.ssh/id_rsa.pub 查看秘钥
+>>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
 
         
                 [lvhongbin@localhost Git_Study]$ ssh-keygen -t rsa -C "hblvsjtu@163.com"
@@ -903,7 +921,11 @@
                 [root@localhost Git_Study]# git config --global user.email "hblvsjtu@163.com"
                 [root@localhost Git_Study]# git config --global user.name "LvHongbin"
 
+<<<<<<< HEAD
 #### 1) 远程克隆 
+=======
+#### 2) 远程克隆 
+>>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
 > - git clone URL
         
                 [lvhongbin@localhost git]$ git clone https://github.com/hblvsjtu/Git_Study.git
@@ -924,6 +946,10 @@
                 drwxrwxr-x. 2 lvhongbin lvhongbin    80 May 31 18:22 picture
                 -rw-rw-r--. 1 lvhongbin lvhongbin 31474 May 31 18:22 README.html
                 -rw-rw-r--. 1 lvhongbin lvhongbin 40549 May 31 18:22 README.md
+<<<<<<< HEAD
+=======
+#### 3) 远程提交 
+>>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
 > - git push
                 
                 [lvhongbin@localhost Git_Study]$ git push
@@ -943,4 +969,13 @@
 
                 Username for 'https://github.com': hblvsjtu
                 Password for 'https://hblvsjtu@github.com': 
+<<<<<<< HEAD
                 Everything up-to-date
+=======
+                Everything up-to-date
+#### 4) 远程pull 
+> - git pull
+#### 5) 远程获取元数据 
+> - git fetch
+
+>>>>>>> 00d7b4c17633f7c7dfded78aa79b4fdd1ee18124
