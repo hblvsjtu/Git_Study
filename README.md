@@ -453,7 +453,7 @@
 > - 查看提交信息
         
                 git cat-file -p 提交码前面7位
->>>>>> ![图3-1 二次提交的Git对象.jpg]()
+>>>>>> ![图3-1 二次提交的Git对象.jpg](https://github.com/hblvsjtu/Git_Study/blob/master/picture/%E5%9B%BE3-1%20%E4%BA%8C%E6%AC%A1%E6%8F%90%E4%BA%A4%E7%9A%84Git%E5%AF%B9%E8%B1%A1.jpg?raw=true)
         
 <h3 id='3.2'>3.2 基本操作</h3>  
         
@@ -616,8 +616,222 @@
         
         
 <h2 id='4'>四、分支</h2>
-<h3 id='4.1'>1.1 背景</h3>  
+<h3 id='4.1'>4.1 基本命令</h3>  
         
-#### 1) VCS
-> -   
-> -       
+#### 1) 创建分支 
+> - git branch {branch} {starting-commit}  
+> - 命名方式最好以目录的形式 如test/test1
+> - 默认是从最近一次提交作为分支的开始
+> - 如果是想修复某一个bug，可以从指定的提交开始
+        
+                [lvhongbin@localhost website]$ git show-branch
+                [master] has changed filename
+
+                # commit 0a4d3f1a2f913e725ed8c4e2bf9afa1cb849fc26
+                # Author: LvHongbin <hblvsjtu@163.com>
+                # Date:   Thu May 31 11:14:06 2018 +0800
+                # execute commit --all command
+                [lvhongbin@localhost website]$ git branch test/test1 0a4d3f1
+                
+#### 2) 列出分支名 
+> - git branch       
+        
+                [lvhongbin@localhost website]$ git branch
+                * master
+                  test/test1
+#### 3) 查看分支
+> - git show-branch {branchName}
+        
+                [lvhongbin@localhost website]$ git show-branch
+                * [master] has changed filename
+                 ! [test/test1] execute commit --all command
+                --
+                *  [master] has changed filename
+                *  [master^] before change name
+                *+ [test/test1] execute commit --all command
+>>>>>> ![图4-1 分支查看.jpg]()
+        
+#### 4) 工作分支的检出（或者说是转移）
+> - git checkout {branchName}
+> - 可以明显看出来星号*已经转移到指定的分支了 
+        
+                [lvhongbin@localhost website]$ git branch
+                * master
+                  test/test1
+                [lvhongbin@localhost website]$ git checkout test/test1
+                Switched to branch 'test/test1'
+                [lvhongbin@localhost website]$ git branch
+                  master
+                * test/test1
+> - 创建并快速检出 git checkout -b test/test3
+        
+                [lvhongbin@localhost website]$ git checkout -b test/test3
+                M   mergeCheckoutFile.txt
+                Switched to a new branch 'test/test3'
+            
+                [lvhongbin@localhost website]$ git branch
+                  master
+                  test/test1
+                  test/test2
+                * test/test3
+> - 当有未提交的更改时发生检出，此时git会提示错误。但是第一次创建文件时候的未提交不算，从第二次修改未提交后发生检出，则报错，以此最大限度保证修改被保存下来
+> - 当然，如果你真的不介意数据的丢失，可以采取强制的手段让他检出 -f
+> - 对于文件未添加状态的文件，检出的时候不加理会
+        
+                [lvhongbin@localhost website]$ touch newBranchNotCommitFile.txt
+                [lvhongbin@localhost website]$ git add newBranchNotCommitFile.txt
+                [lvhongbin@localhost website]$ git checkout master
+                A   newBranchNotCommitFile.txt
+                Switched to branch 'master'
+                [lvhongbin@localhost website]$ git checkout test/test1
+                A   newBranchNotCommitFile.txt
+                Switched to branch 'test/test1'
+                [lvhongbin@localhost website]$ git commit
+                [test/test1 d61f018] test/test1 CommitFile.txt
+                 1 file changed, 0 insertions(+), 0 deletions(-)
+                 create mode 100644 newBranchNotCommitFile.txt
+                [lvhongbin@localhost website]$ vim newBranchNotCommitFile.txt
+                [lvhongbin@localhost website]$ git checkout master
+                error: Your local changes to the following files would be overwritten by checkout:
+                    newBranchNotCommitFile.txt
+                Please, commit your changes or stash them before you can switch branches.
+                Aborting
+
+                # 必须commit后才能检出
+                [lvhongbin@localhost website]$ git add newBranchNotCommitFile.txt
+                [lvhongbin@localhost website]$ git checkout master
+                error: Your local changes to the following files would be overwritten by checkout:
+                    newBranchNotCommitFile.txt
+                Please, commit your changes or stash them before you can switch branches.
+                Aborting
+
+                # 必须commit后才能检出
+                [lvhongbin@localhost website]$ git commit -m "New branch has commited file"
+                [test/test1 62837ae] New branch has commited file
+                 1 file changed, 1 insertion(+)
+                [lvhongbin@localhost website]$ git checkout master
+                Switched to branch 'master'
+#### 5) 合并变更到不同的分支
+> - gei checkout -m {branch}
+> - 把修改的内容加入到目标分支中
+        
+                [lvhongbin@localhost website]$ git branch
+                  master
+                * test/test1
+                [lvhongbin@localhost website]$ git branch test/test2
+                [lvhongbin@localhost website]$ git checkout test/test2
+                D   mergeCheckoutFile.txt
+                Switched to branch 'test/test2'
+                [lvhongbin@localhost website]$ touch mergeCheckoutFile.txt
+                [lvhongbin@localhost website]$ git add mergeCheckoutFile.txt
+                [lvhongbin@localhost website]$ git commit mergeCheckoutFile.txt
+                # On branch test/test2
+                # Untracked files:
+                #   (use "git add <file>..." to include in what will be committed)
+                #
+                #   newfilenotadd.txt
+                nothing added to commit but untracked files present (use "git add" to track)
+
+                [lvhongbin@localhost website]$ vim mergeCheckoutFile.txt
+                [lvhongbin@localhost website]$ vim mergeCheckoutFile.txt
+                [lvhongbin@localhost website]$ cat mergeCheckoutFile.txt
+                mergeCheckoutFile.txt
+                [lvhongbin@localhost website]$ git branch
+                  master
+                  test/test1
+                * test/test2
+                [lvhongbin@localhost website]$ git checkout -m test/test1
+                M   mergeCheckoutFile.txt
+                Switched to branch 'test/test1'
+                [lvhongbin@localhost website]$ git branch
+                  master
+                * test/test1
+                  test/test2
+
+                [lvhongbin@localhost website]$ git show-branch test/test1
+                [test/test1] mergeCheckoutFile
+                [lvhongbin@localhost website]$ git show-branch test/test2
+                [test/test2] mergeCheckoutFile
+                [lvhongbin@localhost website]$ cat mergeCheckoutFile.txt
+                mergeCheckoutFile.txt
+
+                # 合并后如果在修改，则不会进行同步修改，只能合并 合并之前的改动
+                [lvhongbin@localhost website]$ git checkout test/test2
+                M   mergeCheckoutFile.txt
+                Switched to branch 'test/test2'
+                [lvhongbin@localhost website]$ touch mergeCheckoutFile2.txt
+                [lvhongbin@localhost website]$ git add mergeCheckoutFile2.txt
+                [lvhongbin@localhost website]$ git commit mergeCheckoutFile2.txt
+                [test/test2 dcd7ee8] commit mergeCheckoutFile2.txt
+                 1 file changed, 0 insertions(+), 0 deletions(-)
+                 create mode 100644 mergeCheckoutFile2.txt
+                [lvhongbin@localhost website]$ git show-branch test/test2
+                [test/test2] commit mergeCheckoutFile2.txt
+                [lvhongbin@localhost website]$ git show-branch test/test1
+                [test/test1] mergeCheckoutFile
+
+                [lvhongbin@localhost website]$ git show-branch
+                ! [master] has changed filename
+                 ! [test/test1] mergeCheckoutFile
+                  * [test/test2] commit mergeCheckoutFile2.txt
+                ---
+                  * [test/test2] commit mergeCheckoutFile2.txt
+                 +* [test/test1] mergeCheckoutFile
+                 +* [test/test1^] New branch has commited file
+                 +* [test/test1~2] test/test1 CommitFile.txt
+                +   [master] has changed filename
+                +   [master^] before change name
+                ++* [test/test1~3] execute commit --all command
+#### 6) 删除分支
+> - git branch -d {branch} 
+> - 删除的分支蹦年是当前的工作分支，如果是则先要切换
+> - 删除分支前需要先合并，这是为了保护数据，如果需要强制删除，则可以使用-D
+> - 误删分支可以使用git reflog命令来恢复
+                
+                # 删除的分支蹦年是当前的工作分支，否则报错
+                [lvhongbin@localhost website]$ git branch -d master
+                error: Cannot delete the branch 'master' which you are currently on.
+
+                #删除分支前需要先合并，这是为了保护数据，如果需要强制删除，则可以使用-D
+                [lvhongbin@localhost website]$ git branch -d test/test3
+                error: The branch 'test/test3' is not fully merged.
+                If you are sure you want to delete it, run 'git branch -D test/test3'.
+                [lvhongbin@localhost website]$ git show-branch
+                * [master] has changed filename
+                 ! [test/test1] mergeCheckoutFile
+                  ! [test/test2] git commit --all
+                   ! [test/test3] commit mergeCheckoutFile2.txt
+                ----
+                  +  [test/test2] git commit --all
+                  ++ [test/test3] commit mergeCheckoutFile2.txt
+                 +++ [test/test1] mergeCheckoutFile
+                 +++ [test/test1^] New branch has commited file
+                 +++ [test/test1~2] test/test1 CommitFile.txt
+                *    [master] has changed filename
+                *    [master^] before change name
+                *+++ [test/test1~3] execute commit --all command
+                [lvhongbin@localhost website]$ git merge test/test3
+                Merge made by the 'recursive' strategy.
+                 mergeCheckoutFile.txt      | 0
+                 mergeCheckoutFile2.txt     | 0
+                 newBranchNotCommitFile.txt | 1 +
+                 3 files changed, 1 insertion(+)
+                 create mode 100644 mergeCheckoutFile.txt
+                 create mode 100644 mergeCheckoutFile2.txt
+                 create mode 100644 newBranchNotCommitFile.txt
+                [lvhongbin@localhost website]$ git branch -d test/test3
+                Deleted branch test/test3 (was dcd7ee8).
+                [lvhongbin@localhost website]$ git show-branch
+                * [master] Merge branch 'test/test3'
+                 ! [test/test1] mergeCheckoutFile
+                  ! [test/test2] git commit --all
+                ---
+                -   [master] Merge branch 'test/test3'
+                *   [master^] has changed filename
+                *   [master~2] before change name
+                  + [test/test2] git commit --all
+                * + [test/test2^] commit mergeCheckoutFile2.txt
+                *++ [test/test1] mergeCheckoutFile
+
+
+> - 
