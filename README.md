@@ -656,7 +656,7 @@
                 *  [master] has changed filename
                 *  [master^] before change name
                 *+ [test/test1] execute commit --all command
->>>>>> ![图4-1 分支查看.jpg]()
+>>>>>> ![图4-1 分支查看.jpg](https://github.com/hblvsjtu/Git_Study/blob/master/picture/图4-1%20分支查看.jpg?raw=true)
         
 #### 4) 工作分支的检出（或者说是转移）
 > - git checkout {branchName}
