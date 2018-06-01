@@ -31,7 +31,8 @@
 ### [5.2 基本操作](#5.2) 
 ## [六、远程版本库](#6)
 ### [6.1 基本概念](#6.1)
-### [6.2 基本操作](#6.2)   
+### [6.2 基本操作](#6.2)
+### [6.3 最佳实践](#6.3)   
 ------      
         
         
@@ -1048,8 +1049,81 @@
                  * [new branch]      addBranch -> addBranch
                 LvHongbins-Mac:Git_Study lvhongbin$ git push origin :addBranch
                 To https://github.com/hblvsjtu/Git_Study.git
-                 - [deleted]         addBranch
-> - 
+                 - [deleted]         addBranch       
+
+        
+<h3 id='6.3'>6.3 最佳实践</h3>  
+        
+#### 1) 以Linux_Study.git为例
+> -  每次clone或者在更改之前都应该先更新一下远程的data，避免冲突
+        
+                LvHongbins-Mac:Desktop lvhongbin$ git clone https://github.com/hblvsjtu/Linux_Study.git
+                Cloning into 'Linux_Study'...
+                remote: Counting objects: 172, done.
+                remote: Compressing objects: 100% (135/135), done.
+                remote: Total 172 (delta 33), reused 159 (delta 23), pack-reused 0
+                Receiving objects: 100% (172/172), 3.32 MiB | 285.00 KiB/s, done.
+                Resolving deltas: 100% (33/33), done.
+
+                LvHongbins-Mac:Desktop lvhongbin$ cd ./Linux_Study
+                LvHongbins-Mac:Linux_Study lvhongbin$ ls
+                README.html     README.md       picture         practise        practise.tar.gz     recoverTheNet.sh
+
+                # 每次clone或者在更改之前都应该先更新一下远程的data，避免冲突
+                LvHongbins-Mac:Linux_Study lvhongbin$ git remote update
+                Fetching origin
+                LvHongbins-Mac:Linux_Study lvhongbin$ git branch -a
+                * master
+                  remotes/origin/HEAD -> origin/master
+                  remotes/origin/master
+                LvHongbins-Mac:Linux_Study lvhongbin$ git pull origin master
+                From https://github.com/hblvsjtu/Linux_Study
+                 * branch            master     -> FETCH_HEAD
+                Already up to date.
+                LvHongbins-Mac:Linux_Study lvhongbin$ git status
+                On branch master
+                Your branch is up to date with 'origin/master'.
+
+                nothing to commit, working tree clean
+
+                # 确认跟远程数据同步之后再进行更改
+                LvHongbins-Mac:Linux_Study lvhongbin$ cp ../findTheMaxMTU_MasOS.sh  ./practise/findTheMaxMTU_MasOS.sh
+                LvHongbins-Mac:Linux_Study lvhongbin$ vim ./practise/findTheMaxMTU.sh
+
+                # 观察更改的内容
+                LvHongbins-Mac:Linux_Study lvhongbin$ git status
+                On branch master
+                Your branch is up to date with 'origin/master'.
+
+                Changes not staged for commit:
+                  (use "git add <file>..." to update what will be committed)
+                  (use "git checkout -- <file>..." to discard changes in working directory)
+
+                    modified:   practise/findTheMaxMTU.sh
+
+                Untracked files:
+                  (use "git add <file>..." to include in what will be committed)
+
+                    .DS_Store
+                    practise/findTheMaxMTU_MasOS.sh
+
+                no changes added to commit (use "git add" and/or "git commit -a")
+
+                # 添加和提交文件
+                LvHongbins-Mac:Linux_Study lvhongbin$ git add practise/findTheMaxMTU_MasOS.sh
+                LvHongbins-Mac:Linux_Study lvhongbin$ git commit -m "add findTheMaxMTU_MasOS.sh and modify the original practise/findTheMaxMTU.sh  discription" --author="LvHongbin<hblvsjtu@163.com>" practise/findTheMaxMTU_MasOS.sh practise/findTheMaxMTU.sh
+                [master 4284f33] add findTheMaxMTU_MasOS.sh and modify the original practise/findTheMaxMTU.sh  discription
+                 2 files changed, 71 insertions(+), 1 deletion(-)
+                 create mode 100644 practise/findTheMaxMTU_MasOS.sh
+                LvHongbins-Mac:Linux_Study lvhongbin$ git push origin master
+                Counting objects: 5, done.
+                Delta compression using up to 4 threads.
+                Compressing objects: 100% (5/5), done.
+                Writing objects: 100% (5/5), 573 bytes | 573.00 KiB/s, done.
+                Total 5 (delta 4), reused 0 (delta 0)
+                remote: Resolving deltas: 100% (4/4), completed with 3 local objects.
+                To https://github.com/hblvsjtu/Linux_Study.git
+                   65966fe..4284f33  master -> master
 
 
 
