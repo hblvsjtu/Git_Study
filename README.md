@@ -363,6 +363,9 @@
         
                 git config --global user.name "LvHongbin"
                 git config --global user.email "hblvsjtu@163.com"
+
+                # 解决不能显示中文的问题
+                git config --global core.quotepath false
 #### 3) /etc/gitconfig
 > -  这是系统范围的配置设置，优先级最低，可以使用--system选项来修改
 #### 4) 移除设置的命令
