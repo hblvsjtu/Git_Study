@@ -122,6 +122,10 @@
 #### 2) 将文件添加到版本库中
 > - 使用命令git add index.html
 > - 使用git add . 命令可以让Git把当前目录及子目录中的文件都添加到版本库中
+        
+        git add -A  提交所有变化  
+        git add -u  提交被修改(modified)和被删除(deleted)文件，不包括新文件(new)  
+        git add .  提交新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件
 > - git把add和commit这两步分开，以避免频繁的变化
 > - git status 命令显示add和commit之间的状态
 > - git commit -m "日志消息" --author="LvHongbin <hblvsjtu@163.com\>" 一条完全限定的git commit必须提供日志消息和作者
